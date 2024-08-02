@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokes</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Welcome to Joke Zone!</h1>
+    <div class="joke" id="jokeContainer">
+    </div>
+    <form id="jokeForm">
+        <button type="button" id="getjokeButton">Get a Joke</button>
+    </form>
+    <script>
+        document.getElementById("getjokeButton").addEventListener('click', async () => {
+            try {
+                const response = await fetch('/get-joke', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const jokeData = await response.json();
+                const jokeContainer = document.getElementById('jokeContainer');
+                jokeContainer.innerHTML = `
+                    <p><strong>Setup:</strong> ${jokeData.setup}</p>
+                    <p><strong>Punchline:</strong> ${jokeData.punchline}</p>
+                `;
+            } catch (error) {
+                console.log(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
